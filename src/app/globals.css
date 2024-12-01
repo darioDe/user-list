@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+.loader {
+  width: 50px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 8px solid;
+  border-color: #d1d5db #0000;
+  animation: l1 1s infinite;
+}
+
+@keyframes l1 {to{transform: rotate(.5turn)}}
+
+/* Clase para aplicar la animación */
+.fade-in {
+  animation: fadeIn 1s ease-in-out; /* Duración de 1.5s con efecto suave */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0; /* Comienza invisible */
+  }
+  to {
+    opacity: 1; /* Termina completamente visible */
+  }
+}
