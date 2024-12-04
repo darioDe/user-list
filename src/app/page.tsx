@@ -1,8 +1,9 @@
 import api from "@/api";
-import Users from '../types'
+import Users from '../types';
 
 export default async function Home() {
 
+  // Getting users
   const users: Users[]  = await api.list();
 
   if (!users) {
@@ -27,6 +28,7 @@ export default async function Home() {
                 </tr>
             </thead>
             <tbody>
+                {/* Maping the users data  */}
                 {users.map((users) => (
                     <tr 
                       key={users.id} 

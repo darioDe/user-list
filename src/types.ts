@@ -4,4 +4,4 @@ export default interface User {
     email: string,
     gender: string,
     status: string,
-}
+};
