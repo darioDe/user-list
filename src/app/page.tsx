@@ -6,10 +6,13 @@ import api from "@/api";
 import { NewUser, User } from '../types';
 import Loading from "./loading";
 import Button from "./components/Button";
+import ModalDelete from "./components/ModalDelete";
 
 export default function Home() {
   // State to the list of users
   const [users, setUsers] = useState<User[]>([]);
+  const [modalDelete, setModalDelete ] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -54,6 +57,7 @@ export default function Home() {
       console.error('error al eliminar', error);
     } finally {
       setLoading(false)
+      setSelectedUser(null)
     }
   }
 
@@ -102,24 +106,28 @@ export default function Home() {
 
               <tbody>
                   {/* Maping the users data  */}
-                  {users.map((users) => (
+                  {users.map((user) => (
                       <tr 
-                        key={users.id} 
+                        key={user.id} 
                         className="even:bg-gray-700 odd:bg-gray-800 hover:bg-black"
                       >
-                          <td className="text-gray-100 py-2">{users.id}</td>
-                          <td className="text-gray-100">{users.name}</td>
-                          <td className="text-gray-100 hidden sm:table-cell">{users.email}</td>
-                          <td className="text-gray-100 hidden lg:table-cell">{users.gender}</td>
-                          <td className="text-gray-100 hidden lg:table-cell">{users.status}</td>
+                          <td className="text-gray-100 py-2">{user.id}</td>
+                          <td className="text-gray-100">{user.name}</td>
+                          <td className="text-gray-100 hidden sm:table-cell">{user.email}</td>
+                          <td className="text-gray-100 hidden lg:table-cell">{user.gender}</td>
+                          <td className="text-gray-100 hidden lg:table-cell">{user.status}</td>
                           <td className="text-gray-100 flex flex-col">
                             <a 
                               className='underline text-gray-400 hover:text-gray-600 font-bold' 
-                              onClick={() => handleViewDetails(users.id)}
+                              onClick={() => handleViewDetails(user.id)}
                               >Ver</a>
                             <a 
                               className='underline text-gray-400 hover:text-gray-600 font-bold'
-                              onClick={() => handleDelete(users.id)}
+                              // onClick={() => handleDelete(users.id)}
+                              onClick={() => {
+                                setSelectedUser(user);
+                                setModalDelete(true);
+                              }}
                             >
                               Eliminar
                             </a>
@@ -129,6 +137,14 @@ export default function Home() {
               </tbody>
           </table>
       </div>
+      {modalDelete && selectedUser && (
+        <ModalDelete 
+          handleDelete={handleDelete}
+          setSelectedUser={setSelectedUser} 
+          name={selectedUser.name} 
+          id={selectedUser.id}
+        /> 
+      )}
     </div>
   );
 }

@@ -10,7 +10,7 @@ const sleep = (ms: number) =>
 const api = {
   // Function to get user list
   list: async () => {
-    await sleep(1000);
+    await sleep(300);
 
     try {
       const response = await fetch(apiEndpoint, {
@@ -76,7 +76,29 @@ const api = {
       console.error('Error in api delete:', error);
       return false;
     }
-  }
+  },
+  // Function to get user by ID
+  getUser : async (userId: number) => {
+    try {
+      const response = await fetch(`${apiEndpoint}/${userId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch user with ID ${userId}`);
+      }
+
+      const user = await response.json();
+      return user;
+
+    } catch (error) {
+      console.error('Error in api getById:', error);
+      return null;
+    }
+  },
 };
 
 export default api;
