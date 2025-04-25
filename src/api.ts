@@ -10,7 +10,7 @@ const sleep = (ms: number) =>
 const api = {
   // Function to get user list
   list: async () => {
-    await sleep(300);
+    await sleep(100);
 
     try {
       const response = await fetch(apiEndpoint, {
@@ -99,6 +99,30 @@ const api = {
       return null;
     }
   },
+  // Function to edit User
+  editUser: async (userId: number, user: Partial<NewUser>) => {
+    try {
+      const response = await fetch(`${apiEndpoint}/${userId}`, {
+        method: 'PATCH', // También se podría usar PUT según la API
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify(user),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to edit user with ID ${userId}`);
+      }
+  
+      const updatedUser = await response.json();
+      return updatedUser;
+    } catch (error) {
+      console.error('Error in api editUser:', error);
+      return null;
+    }
+  },
+  
 };
 
 export default api;
